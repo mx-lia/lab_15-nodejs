@@ -2,9 +2,9 @@ const url = require('url');
 let err_handler = require('./err_handler');
 
 module.exports = (req, res, db) => {
-    const path = (url.parse(req.url)).pathname;
+    const path = decodeURI((url.parse(req.url)).pathname);
     switch(true) {
-        case /\/api\/faculties\/\w+/.test(path): {
+        case /\/api\/faculties\/.+/.test(path): {
             db.collection('faculty').deleteMany(
                 { faculty: path.split('/')[3] },
                 (err, result) => {
@@ -17,7 +17,7 @@ module.exports = (req, res, db) => {
                     }
                 });
         } break;
-        case /\/api\/pulpits\/\w+/.test(path): {
+        case /\/api\/pulpits\/.+/.test(path): {
             db.collection('pulpit').deleteMany(
                 { pulpit: path.split('/')[3] },
                 (err, result) => {
